@@ -9,11 +9,20 @@ from decimal import Decimal
 from .models import MenuItem,Booking
 from .serializers import MenuItemSerializer,BookingSerializer
 
+from rest_framework.decorators import api_view, permission_classes
+
+@api_view()
+@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+def msg(request):
+    return Response({"message":"This view is protected"})
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html', {})
 
 class MenuItemView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
 
